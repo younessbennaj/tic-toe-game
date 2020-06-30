@@ -6,7 +6,11 @@ let context = canvas.getContext("2d");
 
 /*/UI Element/*/
 
+//UI element that display the current round 
 let roundCounter = document.getElementById("roundCounter");
+
+//UI element that display the result of the game
+let resultMessage = document.getElementById("resultMessage");
 
 /*/
     *** BOARD CLASS ***
@@ -69,7 +73,7 @@ class Board {
                 that.fillTile(that.currentTile);
                 roundCounter.innerHTML = ++that.round;
                 if (that.round === 9) {
-                    console.log("GAME OVER");
+                    resultMessage.innerHTML = "GAME OVER";
                 }
             }
 
