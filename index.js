@@ -4,6 +4,10 @@ let canvas = document.getElementById("myCanvas");
 //get the drawing context
 let context = canvas.getContext("2d");
 
+/*/UI Element/*/
+
+let roundCounter = document.getElementById("roundCounter");
+
 /*/
     *** BOARD CLASS ***
 /*/
@@ -23,7 +27,7 @@ class Board {
         //Board's tiles
         this.tiles = [];
         //Current clicked tile
-        this.currentTile = {};
+        this.currentTile = { coord: {} };
         //Style
         this.tileColor = "orangered";
 
@@ -49,15 +53,26 @@ class Board {
             let tileX = Math.ceil(cursorPosition.x / that.tileW) - 1;
             let tileY = Math.ceil(cursorPosition.y / that.tileH) - 1;
 
-            that.currentTile = that.tiles.find(function (element) {
-                return element.coord.x === tileX && element.coord.y === tileY;
-            });
+            //Tile coord
+            let { coord } = that.currentTile;
 
-            that.currentTile.color = that.tileColor;
 
-            that.fillTile(that.currentTile);
+            if (coord.x === tileX && coord.y === tileY) {
+                console.log('Already clicked');
+            } else {
+                that.currentTile = that.tiles.find(function (element) {
+                    return element.coord.x === tileX && element.coord.y === tileY;
+                });
+                that.currentTile.isClicked = true;
+                that.currentTile.color = that.tileColor;
 
-            that.round++;
+                that.fillTile(that.currentTile);
+                roundCounter.innerHTML = ++that.round;
+                if (that.round === 9) {
+                    console.log("GAME OVER");
+                }
+            }
+
         }
 
         this.ctx.canvas.addEventListener('click', clickOnBoard);
@@ -104,6 +119,8 @@ class Tile {
     constructor(coord) {
         this.coord = coord;
         this.color = "white";
+        //Is already clicked by a player ?
+        this.isClicked = false;
     }
 }
 
