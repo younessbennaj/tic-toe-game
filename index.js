@@ -10,6 +10,8 @@ let context = canvas.getContext("2d");
 
 class Board {
     constructor(ctx, dim) {
+        /*/Board/*/
+
         //Drawing context
         this.ctx = ctx;
         //Board dimensions (e.g: 3 * 3 gird)
@@ -24,6 +26,9 @@ class Board {
         this.currentTile = {};
         //Style
         this.tileColor = "orangered";
+
+        /*/Game props/*/
+        this.round = 0;
     }
 
     init() {
@@ -51,6 +56,8 @@ class Board {
             that.currentTile.color = that.tileColor;
 
             that.fillTile(that.currentTile);
+
+            that.round++;
         }
 
         this.ctx.canvas.addEventListener('click', clickOnBoard);
@@ -101,6 +108,6 @@ class Tile {
 }
 
 //New instance of the board
-let board = new Board(context, 4);
+let board = new Board(context, 3);
 //init
 board.init();
