@@ -57,25 +57,31 @@ class Board {
             let tileX = Math.ceil(cursorPosition.x / that.tileW) - 1;
             let tileY = Math.ceil(cursorPosition.y / that.tileH) - 1;
 
-            //Tile coord
-            let { coord } = that.currentTile;
+            //check a tile with a round or a cross
+            function checkTile(tile) {
 
+                //Tile coord
+                let { coord } = tile;
 
-            if (coord.x === tileX && coord.y === tileY) {
-                console.log('Already clicked');
-            } else {
-                that.currentTile = that.tiles.find(function (element) {
-                    return element.coord.x === tileX && element.coord.y === tileY;
-                });
-                that.currentTile.isClicked = true;
-                that.currentTile.color = that.tileColor;
-
-                that.fillTile(that.currentTile);
-                roundCounter.innerHTML = ++that.round;
-                if (that.round === 9) {
-                    resultMessage.innerHTML = "GAME OVER";
+                if (coord.x !== tileX || coord.y !== tileY) {
+                    that.currentTile = that.tiles.find(function (element) {
+                        return element.coord.x === tileX && element.coord.y === tileY;
+                    });
+                    if (!that.currentTile.isClicked) {
+                        that.currentTile.color = that.tileColor;
+                        that.currentTile.isClicked = true;
+                        that.fillTile(that.currentTile);
+                        roundCounter.innerHTML = ++that.round;
+                    }
+                    //Max round 
+                    if (that.round === 9) {
+                        resultMessage.innerHTML = "GAME OVER";
+                    }
                 }
+
             }
+
+            checkTile(that.currentTile)
 
         }
 
