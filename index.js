@@ -31,7 +31,7 @@ class Board {
         //Board's tiles
         this.tiles = [];
         //Current clicked tile
-        this.currentTile = { coord: {} };
+        this.currentTile = { coord: {}, isClicked: false };
         //Style
         this.tileColor = "orangered";
 
@@ -49,36 +49,23 @@ class Board {
 
         //Click event on the board game
         function clickOnBoard(event) {
-            var cursorPosition = {
-                x: event.offsetX,
-                y: event.offsetY
-            };
-
-            let tileX = Math.ceil(cursorPosition.x / that.tileW) - 1;
-            let tileY = Math.ceil(cursorPosition.y / that.tileH) - 1;
-
-            //check a tile with a round or a cross
+            //check a tile with a circle or a cross
             function checkTile(tile) {
-
-                //Tile coord
+                let tileX = Math.ceil(event.offsetX / that.tileW) - 1; //x-axis 
+                let tileY = Math.ceil(event.offsetY / that.tileH) - 1; //y-axis
                 let { coord } = tile;
-
                 if (coord.x !== tileX || coord.y !== tileY) {
-                    that.currentTile = that.tiles.find(function (element) {
+                    tile = that.tiles.find(function (element) {
                         return element.coord.x === tileX && element.coord.y === tileY;
                     });
-                    if (!that.currentTile.isClicked) {
-                        that.currentTile.color = that.tileColor;
-                        that.currentTile.isClicked = true;
-                        that.fillTile(that.currentTile);
+                    if (!tile.isClicked) {
+                        tile.color = that.tileColor;
+                        tile.isClicked = true;
+                        that.fillTile(tile);
                         roundCounter.innerHTML = ++that.round;
                     }
-                    //Max round 
-                    if (that.round === 9) {
-                        resultMessage.innerHTML = "GAME OVER";
-                    }
+                    if (that.round === 9) resultMessage.innerHTML = "GAME OVER";
                 }
-
             }
 
             checkTile(that.currentTile)
