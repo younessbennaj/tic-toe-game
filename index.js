@@ -49,8 +49,8 @@ class Board {
 
         //Click event on the board game
         function clickOnBoard(event) {
-            //check a tile with a circle or a cross
-            function checkTile(tile) {
+            //process to check a tile with a circle or a cross
+            (function checkTile(tile) {
                 let tileX = Math.ceil(event.offsetX / that.tileW) - 1; //x-axis 
                 let tileY = Math.ceil(event.offsetY / that.tileH) - 1; //y-axis
                 let { coord } = tile;
@@ -64,11 +64,11 @@ class Board {
                         that.fillTile(tile);
                         roundCounter.innerHTML = ++that.round;
                     }
-                    if (that.round === 9) resultMessage.innerHTML = "GAME OVER";
                 }
-            }
+            })(that.currentTile)
 
-            checkTile(that.currentTile)
+            //Check if the game is over
+            if (that.round === 9) resultMessage.innerHTML = "GAME OVER";
 
         }
 
