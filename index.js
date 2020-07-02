@@ -37,6 +37,10 @@ class Board {
 
         /*/Game props/*/
         this.round = 0;
+        //players list
+        this.players = [];
+        //current player 
+        this.currentPlayer = {};
     }
 
     init() {
@@ -49,6 +53,13 @@ class Board {
 
         //Click event on the board game
         function clickOnBoard(event) {
+            //process to set the current player
+            (function setPlayer() {
+                if (that.round % 2 === 0) that.currentPlayer = that.players[0]
+                else that.currentPlayer = that.players[1]
+                that.ctx.fillStyle = that.currentPlayer.color;
+            })();
+
             //process to check a tile with a circle or a cross
             (function checkTile(tile) {
                 //tileX and tileY => give coord of the clicked tile (e.g: (0, 1))
@@ -126,7 +137,19 @@ class Tile {
     }
 }
 
+//Player class
+class Player {
+    constructor(name, color) {
+        this.name = name;
+        this.color = color;
+    }
+}
+
+let player1 = new Player("player1", "Aquamarine");
+let player2 = new Player("player1", "Coral");
+
 //New instance of the board
 let board = new Board(context, 3);
+board.players.push(player1, player2);
 //init
 board.init();
