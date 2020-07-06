@@ -60,31 +60,67 @@ class Board {
                 that.ctx.fillStyle = that.currentPlayer.color;
             })();
 
-            //process to check a tile with a circle or a cross
-            (function checkTile(tile) {
+            //process to mark a tile with a X or a O
+            (function markTile() {
                 //tileX and tileY => give coord of the clicked tile (e.g: (0, 1))
                 let tileX = Math.ceil(event.offsetX / that.tileW) - 1; //x-axis 
                 let tileY = Math.ceil(event.offsetY / that.tileH) - 1; //y-axis
                 //get current tile object coord
-                let { coord } = tile;
+                let { coord } = that.currentTile;
                 //check if the current tile object isn't the clicked tile
                 if (coord.x !== tileX || coord.y !== tileY) {
                     //retrieve the clicked tile in the tiles data structure
-                    tile = that.tiles.find(function (element) {
+                    that.currentTile = that.tiles.find(function (element) {
                         return element.coord.x === tileX && element.coord.y === tileY;
                     });
                     //If this tile isn't already clicked, fill this tile and finish the round
-                    if (!tile.isClicked) {
-                        tile.color = that.tileColor;
-                        tile.isClicked = true;
-                        that.fillTile(tile);
+                    if (!that.currentTile.isClicked) {
+                        that.currentTile.color = that.currentPlayer.color;
+                        that.currentTile.isClicked = true;
+                        that.currentTile.clickedBy = that.currentPlayer;
+                        that.currentPlayer.updateGameModel(that.currentTile);
+                        that.fillTile(that.currentTile);
                         roundCounter.innerHTML = ++that.round;
                     }
                 }
-            })(that.currentTile);
+            })();
+
+            //checkIfWin
+
+            (function isWon() {
+                let { game } = that.currentPlayer;
+
+                function isWonVertical(arrays) {
+                    for (var i = 0; i < 3; i++) {
+                        if (arrays[0][i] && arrays[1][i] && arrays[2][i]) return true
+                    }
+                    return false;
+                }
+
+                function isWonDiagonal(arrays) {
+                    if (arrays[0][0] && arrays[1][1] && arrays[2][2]) return true;
+                    if (arrays[0][2] && arrays[1][1] && arrays[2][0]) return true;
+                    return false;
+                }
+
+                function isWonHorizontal(arrays) {
+                    for (var i = 0; i < 3; i++) {
+                        if (arrays[i][0] && arrays[i][1] && arrays[i][2]) return true;
+                    }
+                    return false;
+                }
+
+                that.currentPlayer.hasWon = isWonVertical(game) || isWonDiagonal(game) || isWonHorizontal(game);
+
+            })()
 
             //Check if the game is over
             if (that.round === 9) resultMessage.innerHTML = "GAME OVER";
+
+            //Check if the current player has won the game
+            if (that.currentPlayer.hasWon) {
+                resultMessage.innerHTML = `Congrats ! ${that.currentPlayer.name} has won the game !`
+            }
 
         }
 
@@ -132,8 +168,8 @@ class Tile {
     constructor(coord) {
         this.coord = coord;
         this.color = "white";
-        //Is already clicked by a player ?
         this.isClicked = false;
+        this.clickedBy = {};
     }
 }
 
@@ -142,6 +178,23 @@ class Player {
     constructor(name, color) {
         this.name = name;
         this.color = color;
+        //Represent the game played by the player from a logic point of view
+        //model data of the game played by the player
+        this.game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        //
+        this.hasWon = false;
+    }
+
+    //updateGameModel => pass value to "true" when the player clicked on a tile
+    updateGameModel(tile) {
+        //get tile coord to update the corresponding value in the data-structure
+        let { x, y } = tile.coord;
+        //update the model data-structure 
+        this.game[x][y] = 1;
+    }
+
+    static getPossibleVertex(position, element) {
+        return Math.pow(position, element);
     }
 }
 
