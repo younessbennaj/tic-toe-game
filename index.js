@@ -110,12 +110,17 @@ class Board {
                     return false;
                 }
 
-                console.log(isWonVertical(game) || isWonDiagonal(game) || isWonHorizontal(game));
+                that.currentPlayer.hasWon = isWonVertical(game) || isWonDiagonal(game) || isWonHorizontal(game);
 
             })()
 
             //Check if the game is over
             if (that.round === 9) resultMessage.innerHTML = "GAME OVER";
+
+            //Check if the current player has won the game
+            if (that.currentPlayer.hasWon) {
+                resultMessage.innerHTML = `Congrats ! ${that.currentPlayer.name} has won the game !`
+            }
 
         }
 
@@ -176,6 +181,8 @@ class Player {
         //Represent the game played by the player from a logic point of view
         //model data of the game played by the player
         this.game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        //
+        this.hasWon = false;
     }
 
     //updateGameModel => pass value to "true" when the player clicked on a tile
