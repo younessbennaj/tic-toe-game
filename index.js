@@ -87,22 +87,30 @@ class Board {
 
             //checkIfWin
 
-            (function checkIfWin() {
+            (function isWon() {
                 let { game } = that.currentPlayer;
 
-                console.log(Player.getPossibleVertex(game.length, that.dim));
-                //Vérifie si il y'a un gagnant
-                //check if there is any winning arrangement
+                function isWonVertical(arrays) {
+                    for (var i = 0; i < 3; i++) {
+                        if (arrays[0][i] && arrays[1][i] && arrays[2][i]) return true
+                    }
+                    return false;
+                }
 
-                /*/
-                    *** Pseudo code ***
+                function isWonDiagonal(arrays) {
+                    if (arrays[0][0] && arrays[1][1] && arrays[2][2]) return true;
+                    if (arrays[0][2] && arrays[1][1] && arrays[2][0]) return true;
+                    return false;
+                }
 
-                    input: tiles an array of Tile object
+                function isWonHorizontal(arrays) {
+                    for (var i = 0; i < 3; i++) {
+                        if (arrays[i][0] && arrays[i][1] && arrays[i][2]) return true;
+                    }
+                    return false;
+                }
 
-                /*/
-                // for (let tile of tiles) {
-                //     let { clickedBy: player, coord: { x, y } } = tile;
-                // }
+                console.log(isWonVertical(game) || isWonDiagonal(game) || isWonHorizontal(game));
 
             })()
 
