@@ -218,8 +218,17 @@ import { Canvas } from './modules/canvas.js';
 
 let container = document.getElementById("game-container");
 
-//create a new instance of Canvas()
-let canvas = new Canvas(container);
+/*/
+    new Canvas(width, height, id, parent) => create a new instance of the Canvas
+    class.
+
+    width (number)
+    height (number)
+    id (string)
+    parent (Element() instance, DOM element)
+
+/*/
+let canvas = new Canvas(300, 300, "myCanvas", container);
 //we call the init() method that append the canvas element in the parent node
 //and create a drawing context.
 canvas.init();
