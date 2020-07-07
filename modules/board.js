@@ -1,3 +1,6 @@
+//We need to import our Tile class
+import { Tile } from './tile.js';
+
 // Our Board class that create an instance of a board game
 class Board {
     constructor(ctx, dim) {
