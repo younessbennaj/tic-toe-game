@@ -1,6 +1,4 @@
-// => get a Canvas instance with a property .ctx that refers to the drawing context
-//create. 
-
+//Our class Canvas to create new instances of canvas elements
 class Canvas {
     constructor(width, height, id, parent) {
         //The canvas drawing context
@@ -14,8 +12,10 @@ class Canvas {
         this.height = height;
     }
 
+    //Prototype methods
+
     init() {
-        //initialize our canvas element and create a drawing context
+        //Initialize our canvas element and create a drawing context
         let canvas = document.createElement('canvas'); //return en Element() instance (see property and methods)
         //Add it an Id attribute
         canvas.id = this.id;
