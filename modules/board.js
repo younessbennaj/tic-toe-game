@@ -1,5 +1,7 @@
 //We need to import our Tile class
 import { Tile } from './tile.js';
+//Get our sprite image
+var sprite = document.getElementById("sprite");
 
 // Our Board class that create an instance of a board game
 class Board {
@@ -32,6 +34,7 @@ class Board {
         this.ctx.fillStyle = this.tileColor;
         this.drawTiles();
         this.buildTiles();
+        this.drawImage();
 
         let that = this;
 
@@ -139,6 +142,10 @@ class Board {
         }
         //Add our handler to the click event listener on the drawing context instance
         this.ctx.canvas.addEventListener('click', clickOnBoard);
+    }
+
+    drawImage() {
+        this.ctx.drawImage(sprite, 0, 0);
     }
 
     drawTiles() {
