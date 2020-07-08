@@ -35,45 +35,71 @@ class Board {
 
         let that = this;
 
-        //Click event on the board game
-        function clickOnBoard(event) {
-            //process to set the current player
-            (function setPlayer() {
-                if (that.round % 2 === 0) that.currentPlayer = that.players[0]
-                else that.currentPlayer = that.players[1]
-                that.ctx.fillStyle = that.currentPlayer.color;
+        /*/
+            => Why are we using an arrow function here ?
+
+            Arrow function are not only syntactic sugar. It change the way 'this'
+            is binded inside the function. 
+
+            Actually, 'this' inside the arrow function is bind to 'this' in the 
+            parent context. 
+            
+            It means that unlike classic function, the value of this don't depend on
+            the way the function is called. 'this' in an arrow function always has
+            the value it had when the function was defined.
+
+            So, in our case the arrow function stored in clickOnBoard variable will
+            be called when a click event is triggered. Unsually when a classic function
+            is called as an event handler by the addEventListener() method, there is some 
+            code inside the JS engine that bind 'this' to a value that represent the current
+            cliked element (in our case the canvas element). But thanks to arrow function
+            we can avoid this behavior and 'this' keep reference to the value of this
+            inside the init() method.
+            
+            That's it ! 
+        /*/
+
+        //Handler to call when a "click" event is triggered on the canvas element
+        let clickOnBoard = () => {
+            console.log(this);
+
+            //Process to set the current player
+            (() => {
+                if (this.round % 2 === 0) this.currentPlayer = this.players[0]
+                else this.currentPlayer = this.players[1]
+                this.ctx.fillStyle = this.currentPlayer.color;
             })();
 
-            //process to mark a tile with a X or a O
-            (function markTile() {
+            //process to mark a tile and update attributes
+            (() => {
                 //tileX and tileY => give coord of the clicked tile (e.g: (0, 1))
-                let tileX = Math.ceil(event.offsetX / that.tileW) - 1; //x-axis 
-                let tileY = Math.ceil(event.offsetY / that.tileH) - 1; //y-axis
+                let tileX = Math.ceil(event.offsetX / this.tileW) - 1; //x-axis 
+                let tileY = Math.ceil(event.offsetY / this.tileH) - 1; //y-axis
                 //get current tile object coord
-                let { coord } = that.currentTile;
+                let { coord } = this.currentTile;
                 //check if the current tile object isn't the clicked tile
                 if (coord.x !== tileX || coord.y !== tileY) {
                     //retrieve the clicked tile in the tiles data structure
-                    that.currentTile = that.tiles.find(function (element) {
+                    this.currentTile = this.tiles.find(function (element) {
                         return element.coord.x === tileX && element.coord.y === tileY;
                     });
                     //If this tile isn't already clicked, fill this tile and finish the round
-                    if (!that.currentTile.isClicked) {
-                        that.currentTile.color = that.currentPlayer.color;
-                        that.currentTile.isClicked = true;
-                        that.currentTile.clickedBy = that.currentPlayer;
-                        that.currentPlayer.updateGameModel(that.currentTile);
-                        that.fillTile(that.currentTile);
-                        roundCounter.innerHTML = ++that.round;
+                    if (!this.currentTile.isClicked) {
+                        this.currentTile.color = this.currentPlayer.color;
+                        this.currentTile.isClicked = true;
+                        this.currentTile.clickedBy = this.currentPlayer;
+                        this.currentPlayer.updateGameModel(this.currentTile);
+                        this.fillTile(this.currentTile);
+                        roundCounter.innerHTML = ++this.round;
                     }
                 }
             })();
 
-            (function isWon() {
-                // => Check if there is any winning arrangement for a given grid arrangement
+            // => Check if there is any winning arrangement for a given grid arrangement
+            (() => {
 
                 //Get the game arrangement of the current player
-                let { game } = that.currentPlayer;
+                let { game } = this.currentPlayer;
 
                 //Is a winning arragement in vertical way?
                 function isWonVertical(arrays) {
@@ -99,20 +125,18 @@ class Board {
                 }
 
                 //Is there any winning arrangement? 
-                that.currentPlayer.hasWon = isWonVertical(game) || isWonDiagonal(game) || isWonHorizontal(game);
+                this.currentPlayer.hasWon = isWonVertical(game) || isWonDiagonal(game) || isWonHorizontal(game);
 
             })()
 
             //Check if the game is over
-            if (that.round === 9) resultMessage.innerHTML = "GAME OVER";
+            if (this.round === 9) resultMessage.innerHTML = "GAME OVER";
 
             //Check if the current player has won the game
-            if (that.currentPlayer.hasWon) {
-                resultMessage.innerHTML = `Congrats ! ${that.currentPlayer.name} has won the game !`
+            if (this.currentPlayer.hasWon) {
+                resultMessage.innerHTML = `Congrats ! ${this.currentPlayer.name} has won the game !`
             }
-
         }
-
         //Add our handler to the click event listener on the drawing context instance
         this.ctx.canvas.addEventListener('click', clickOnBoard);
     }
