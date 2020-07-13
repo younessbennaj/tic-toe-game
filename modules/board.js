@@ -64,7 +64,6 @@ class Board {
 
         //Handler to call when a "click" event is triggered on the canvas element
         let clickOnBoard = () => {
-            console.log(this);
 
             //Process to set the current player
             (() => {
@@ -145,7 +144,8 @@ class Board {
     }
 
     drawImage() {
-        this.ctx.drawImage(sprite, 0, 0);
+        this.ctx.drawImage(sprite, 10, 10, 120, 120, 2, 2, 90, 90); //X
+        this.ctx.drawImage(sprite, 190, 190, 130, 130, 5, 5, 90, 90);
     }
 
     drawTiles() {
