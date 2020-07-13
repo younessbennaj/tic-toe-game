@@ -1,5 +1,7 @@
 //We need to import our Tile class
 import { Tile } from './tile.js';
+//Get our sprite image
+var sprite = document.getElementById("sprite");
 
 // Our Board class that create an instance of a board game
 class Board {
@@ -32,6 +34,7 @@ class Board {
         this.ctx.fillStyle = this.tileColor;
         this.drawTiles();
         this.buildTiles();
+        //this.drawImage();
 
         let that = this;
 
@@ -61,7 +64,6 @@ class Board {
 
         //Handler to call when a "click" event is triggered on the canvas element
         let clickOnBoard = () => {
-            console.log(this);
 
             //Process to set the current player
             (() => {
@@ -89,7 +91,8 @@ class Board {
                         this.currentTile.isClicked = true;
                         this.currentTile.clickedBy = this.currentPlayer;
                         this.currentPlayer.updateGameModel(this.currentTile);
-                        this.fillTile(this.currentTile);
+                        //this.fillTile(this.currentTile);
+                        this.drawImage(this.currentTile, this.currentPlayer);
                         roundCounter.innerHTML = ++this.round;
                     }
                 }
@@ -139,6 +142,18 @@ class Board {
         }
         //Add our handler to the click event listener on the drawing context instance
         this.ctx.canvas.addEventListener('click', clickOnBoard);
+    }
+
+    drawImage(tile, player) {
+        let { x, y } = tile.coord;
+        let dx = x * this.tileW;
+        let dy = y * this.tileH;
+
+        if (player.isXPlayer) {
+            this.ctx.drawImage(sprite, 10, 10, 120, 120, dx, dy, 90, 90); //X
+        } else {
+            this.ctx.drawImage(sprite, 182, 182, 138, 138, dx, dy, 90, 90); //O
+        }
     }
 
     drawTiles() {
