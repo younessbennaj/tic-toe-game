@@ -148,8 +148,12 @@ class Board {
         let { x, y } = tile.coord;
         let dx = x * this.tileW;
         let dy = y * this.tileH;
-        this.ctx.drawImage(sprite, 10, 10, 120, 120, dx, dy, 90, 90); //X
-        this.ctx.drawImage(sprite, 182, 182, 138, 138, dx, dy, 90, 90); //O
+
+        if (player.isXPlayer) {
+            this.ctx.drawImage(sprite, 10, 10, 120, 120, dx, dy, 90, 90); //X
+        } else {
+            this.ctx.drawImage(sprite, 182, 182, 138, 138, dx, dy, 90, 90); //O
+        }
     }
 
     drawTiles() {

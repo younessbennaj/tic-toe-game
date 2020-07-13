@@ -33,8 +33,8 @@ canvas.init();
 let board = new Board(canvas.ctx, 3);
 
 //Create 2 new instances of Player to represent our players
-let player1 = new Player("player1", "Aquamarine");
-let player2 = new Player("player2", "Coral");
+let player1 = new Player("player1", true);
+let player2 = new Player("player2", false);
 
 //Add those players to the .players property of the board new intance
 board.players.push(player1, player2);
