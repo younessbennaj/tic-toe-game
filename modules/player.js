@@ -1,7 +1,7 @@
 class Player {
-    constructor(name, color) {
+    constructor(name, color, isXPlayer) {
         this.name = name;
-        this.color = color;
+        this.isXPlayer = isXPlayer;
         //Represent the game played by the player from a logic point of view
         //model data of the game played by the player
         this.game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];

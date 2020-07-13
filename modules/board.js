@@ -34,7 +34,7 @@ class Board {
         this.ctx.fillStyle = this.tileColor;
         this.drawTiles();
         this.buildTiles();
-        this.drawImage();
+        //this.drawImage();
 
         let that = this;
 
@@ -91,7 +91,8 @@ class Board {
                         this.currentTile.isClicked = true;
                         this.currentTile.clickedBy = this.currentPlayer;
                         this.currentPlayer.updateGameModel(this.currentTile);
-                        this.fillTile(this.currentTile);
+                        //this.fillTile(this.currentTile);
+                        this.drawImage(this.currentTile, this.currentPlayer);
                         roundCounter.innerHTML = ++this.round;
                     }
                 }
@@ -143,9 +144,12 @@ class Board {
         this.ctx.canvas.addEventListener('click', clickOnBoard);
     }
 
-    drawImage() {
-        this.ctx.drawImage(sprite, 10, 10, 120, 120, 2, 2, 90, 90); //X
-        this.ctx.drawImage(sprite, 190, 190, 130, 130, 5, 5, 90, 90);
+    drawImage(tile, player) {
+        let { x, y } = tile.coord;
+        let dx = x * this.tileW;
+        let dy = y * this.tileH;
+        this.ctx.drawImage(sprite, 10, 10, 120, 120, dx, dy, 90, 90); //X
+        this.ctx.drawImage(sprite, 182, 182, 138, 138, dx, dy, 90, 90); //O
     }
 
     drawTiles() {
