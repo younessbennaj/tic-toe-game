@@ -10,16 +10,18 @@ class Board {
         this.ctx = ctx;
         //Board dimensions (e.g: 3 * 3 gird)
         this.dim = dim;
+        //Board height 
+        this.height = this.ctx.canvas.height;
+        //Board width
+        this.width = this.ctx.canvas.width;
         //tile height
-        this.tileH = this.ctx.canvas.height / this.dim;
+        this.tileH = this.height / this.dim;
         //tile width
-        this.tileW = this.ctx.canvas.width / this.dim;
+        this.tileW = this.width / this.dim;
         //Board's tiles
         this.tiles = [];
         //Current clicked tile
         this.currentTile = { coord: {}, isClicked: false };
-        //Style
-        this.tileColor = "orangered";
 
         /*/Game props/*/
         this.round = 0;
@@ -133,11 +135,12 @@ class Board {
             })()
 
             //Check if the game is over
-            if (this.round === 9) resultMessage.innerHTML = "GAME OVER";
+            if (this.round === 9) this.setMessage("GAME OVER");
 
             //Check if the current player has won the game
             if (this.currentPlayer.hasWon) {
-                resultMessage.innerHTML = `Congrats ! ${this.currentPlayer.name} has won the game !`
+                this.setMessage(`Congrats ! ${this.currentPlayer.name} has won the game !`);
+                this.resetGame();
             }
         }
         //Add our handler to the click event listener on the drawing context instance
@@ -184,11 +187,34 @@ class Board {
             for (var j = 1; j < this.dim + 1; j++) {
                 //tiles data structure => array of Tile() object
                 this.tiles.push(new Tile({
-                    x: (((this.tileW * i) / this.ctx.canvas.width) * this.dim) - 1,
-                    y: (((this.tileH * j) / this.ctx.canvas.height) * this.dim) - 1
+                    x: (((this.tileW * i) / this.width) * this.dim) - 1,
+                    y: (((this.tileH * j) / this.height) * this.dim) - 1
                 }));
             }
         }
+    }
+
+    resetGame() {
+        //Reset some of the convas propreties 
+        this.tiles = [];
+        this.currentTile = { coord: {}, isClicked: false };
+        this.round = 0;
+        this.currentPlayer = {};
+
+        //Clear all the drawing elements in the canvas
+        this.ctx.clearRect(0, 0, this.width, this.height);
+
+        //Re-build the tiles data-stucture 
+        this.buildTiles();
+        //Re-draw the tiles
+        this.drawTiles();
+        //Clear the message element
+        this.setMessage('');
+    }
+
+    setMessage(message) {
+        let resultMessage = document.getElementById('resultMessage');
+        resultMessage.innerHTML = message;
     }
 }
 
