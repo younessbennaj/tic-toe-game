@@ -71,7 +71,6 @@ class Board {
             (() => {
                 if (this.round % 2 === 0) this.currentPlayer = this.players[0]
                 else this.currentPlayer = this.players[1]
-                this.ctx.fillStyle = this.currentPlayer.color;
             })();
 
             //process to mark a tile and update attributes
@@ -89,13 +88,12 @@ class Board {
                     });
                     //If this tile isn't already clicked, fill this tile and finish the round
                     if (!this.currentTile.isClicked) {
-                        this.currentTile.color = this.currentPlayer.color;
                         this.currentTile.isClicked = true;
                         this.currentTile.clickedBy = this.currentPlayer;
                         this.currentPlayer.updateGameModel(this.currentTile);
                         //this.fillTile(this.currentTile);
                         this.drawImage(this.currentTile, this.currentPlayer);
-                        roundCounter.innerHTML = ++this.round;
+                        this.setRound(++this.round);
                     }
                 }
             })();
@@ -210,11 +208,23 @@ class Board {
         this.drawTiles();
         //Clear the message element
         this.setMessage('');
+        //Reset the round counter to 0
+        this.setRound(this.round);
+
+        //Reset Players Scores 
+        for (let player of this.players) {
+            player.resetScore();
+        }
     }
 
     setMessage(message) {
         let resultMessage = document.getElementById('resultMessage');
         resultMessage.innerHTML = message;
+    }
+
+    setRound(round) {
+        let roundCounter = document.getElementById("roundCounter");
+        roundCounter.innerHTML = round;
     }
 }
 

@@ -17,6 +17,13 @@ class Player {
         this.game[x][y] = 1;
     }
 
+    resetScore() {
+        //Reset game model data structure
+        this.game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        //Reset hasWon proprety to false
+        this.hasWon = false;
+    }
+
     static getPossibleVertex(position, element) {
         return Math.pow(position, element);
     }
