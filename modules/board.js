@@ -199,9 +199,11 @@ class Board {
         modal.style.display = "grid";
         //Wait 3s until reset the game
         setTimeout(() => {
+            this.resetGame();
             modal.style["animation-name"] = "fadeout";
             setTimeout(() => {
                 //At the end of the animation...
+
                 //clear the inline style props
                 modal.style.display = "";
                 modal.style["animation-name"] = "";
