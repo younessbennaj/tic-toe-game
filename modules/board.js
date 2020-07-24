@@ -10,16 +10,18 @@ class Board {
         this.ctx = ctx;
         //Board dimensions (e.g: 3 * 3 gird)
         this.dim = dim;
+        //Board height 
+        this.height = this.ctx.canvas.height;
+        //Board width
+        this.width = this.ctx.canvas.width;
         //tile height
-        this.tileH = this.ctx.canvas.height / this.dim;
+        this.tileH = this.height / this.dim;
         //tile width
-        this.tileW = this.ctx.canvas.width / this.dim;
+        this.tileW = this.width / this.dim;
         //Board's tiles
         this.tiles = [];
         //Current clicked tile
         this.currentTile = { coord: {}, isClicked: false };
-        //Style
-        this.tileColor = "orangered";
 
         /*/Game props/*/
         this.round = 0;
@@ -69,7 +71,6 @@ class Board {
             (() => {
                 if (this.round % 2 === 0) this.currentPlayer = this.players[0]
                 else this.currentPlayer = this.players[1]
-                this.ctx.fillStyle = this.currentPlayer.color;
             })();
 
             //process to mark a tile and update attributes
@@ -87,13 +88,12 @@ class Board {
                     });
                     //If this tile isn't already clicked, fill this tile and finish the round
                     if (!this.currentTile.isClicked) {
-                        this.currentTile.color = this.currentPlayer.color;
                         this.currentTile.isClicked = true;
                         this.currentTile.clickedBy = this.currentPlayer;
                         this.currentPlayer.updateGameModel(this.currentTile);
                         //this.fillTile(this.currentTile);
                         this.drawImage(this.currentTile, this.currentPlayer);
-                        roundCounter.innerHTML = ++this.round;
+                        this.setRound(++this.round);
                     }
                 }
             })();
@@ -133,11 +133,11 @@ class Board {
             })()
 
             //Check if the game is over
-            if (this.round === 9) resultMessage.innerHTML = "GAME OVER";
+            if (this.round === 9) this.setMessage("GAME OVER");
 
             //Check if the current player has won the game
             if (this.currentPlayer.hasWon) {
-                resultMessage.innerHTML = `Congrats ! ${this.currentPlayer.name} has won the game !`
+                this.endGame();
             }
         }
         //Add our handler to the click event listener on the drawing context instance
@@ -184,11 +184,65 @@ class Board {
             for (var j = 1; j < this.dim + 1; j++) {
                 //tiles data structure => array of Tile() object
                 this.tiles.push(new Tile({
-                    x: (((this.tileW * i) / this.ctx.canvas.width) * this.dim) - 1,
-                    y: (((this.tileH * j) / this.ctx.canvas.height) * this.dim) - 1
+                    x: (((this.tileW * i) / this.width) * this.dim) - 1,
+                    y: (((this.tileH * j) / this.height) * this.dim) - 1
                 }));
             }
         }
+    }
+
+    endGame() {
+        let modal = document.getElementById("resultModal");
+        this.setMessage(`${this.currentPlayer.name} has won the game !`);
+        modal.style["animation-name"] = "fadein";
+        modal.style.display = "grid";
+        //Wait 3s until reset the game
+        setTimeout(() => {
+            this.resetGame();
+            modal.style["animation-name"] = "fadeout";
+            setTimeout(() => {
+                //At the end of the animation...
+
+                //clear the inline style props
+                modal.style.display = "";
+                modal.style["animation-name"] = "";
+            }, 2000);
+        }, 3000)
+    }
+
+    resetGame() {
+        //Reset some of the convas propreties 
+        this.tiles = [];
+        this.currentTile = { coord: {}, isClicked: false };
+        this.round = 0;
+        this.currentPlayer = {};
+
+        //Clear all the drawing elements in the canvas
+        this.ctx.clearRect(0, 0, this.width, this.height);
+
+        //Re-build the tiles data-stucture 
+        this.buildTiles();
+        //Re-draw the tiles
+        this.drawTiles();
+        //Clear the message element
+        this.setMessage('');
+        //Reset the round counter to 0
+        this.setRound(this.round);
+
+        //Reset Players Scores 
+        for (let player of this.players) {
+            player.resetScore();
+        }
+    }
+
+    setMessage(message) {
+        let resultMessage = document.getElementById('resultMessage');
+        resultMessage.innerHTML = message;
+    }
+
+    setRound(round) {
+        let roundCounter = document.getElementById("roundCounter");
+        roundCounter.innerHTML = round;
     }
 }
 
