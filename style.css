@@ -8,10 +8,9 @@
     width: 300px;
     background-color: #000000c9;
     color: #fff;
-    display: grid;
     place-items: center;
     animation-duration: 2s;
-    animation-name: fadein;
+    animation-timing-function: cubic-bezier(.39,.58,.57,1);
     display: none;
 }
 
@@ -23,5 +22,16 @@
   
     to {
       opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+  
+    to {
+      opacity: 0;
+      display: none !important; 
     }
 }

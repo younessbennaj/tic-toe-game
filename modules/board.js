@@ -137,7 +137,8 @@ class Board {
 
             //Check if the current player has won the game
             if (this.currentPlayer.hasWon) {
-                this.setMessage(`Congrats ! ${this.currentPlayer.name} has won the game !`);
+                this.endGame();
+                //this.setMessage(`Congrats ! ${this.currentPlayer.name} has won the game !`);
                 //this.resetGame();
             }
         }
@@ -190,6 +191,22 @@ class Board {
                 }));
             }
         }
+    }
+
+    endGame() {
+        let modal = document.getElementById("resultModal");
+        modal.style["animation-name"] = "fadein";
+        modal.style.display = "grid";
+        //Wait 3s until reset the game
+        setTimeout(() => {
+            modal.style["animation-name"] = "fadeout";
+            setTimeout(() => {
+                //At the end of the animation...
+                //clear the inline style props
+                modal.style.display = "";
+                modal.style["animation-name"] = "";
+            }, 2000);
+        }, 3000)
     }
 
     resetGame() {
