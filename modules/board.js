@@ -138,7 +138,7 @@ class Board {
             //Check if the current player has won the game
             if (this.currentPlayer.hasWon) {
                 this.setMessage(`Congrats ! ${this.currentPlayer.name} has won the game !`);
-                this.resetGame();
+                //this.resetGame();
             }
         }
         //Add our handler to the click event listener on the drawing context instance

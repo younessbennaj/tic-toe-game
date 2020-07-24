@@ -1,0 +1,27 @@
+.container {
+    position: relative;
+}
+
+#resultModal {
+    position: absolute;
+    height: 300px;
+    width: 300px;
+    background-color: #000000c9;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    animation-duration: 2s;
+    animation-name: fadein;
+    display: none;
+}
+
+  
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+  
+    to {
+      opacity: 1;
+    }
+}
