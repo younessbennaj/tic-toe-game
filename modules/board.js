@@ -134,13 +134,17 @@ class Board {
 
             })()
 
-            //Check if the game is over
-            if (this.round === 9) this.setMessage("GAME OVER");
 
             //Check if the current player has won the game
             if (this.currentPlayer.hasWon) {
+                this.setMessage(`${this.currentPlayer.name} has won the game !`);
                 this.endGame();
             } else {
+                //Check if the game is over
+                if (this.round === 9) {
+                    this.setMessage("It was a draw");
+                    this.endGame();
+                };
                 //set the new current player
                 if (this.round % 2 === 0) this.currentPlayer = this.players[0]
                 else this.currentPlayer = this.players[1]
@@ -200,7 +204,7 @@ class Board {
 
     endGame() {
         let modal = document.getElementById("resultModal");
-        this.setMessage(`${this.currentPlayer.name} has won the game !`);
+        // this.setMessage(`${this.currentPlayer.name} has won the game !`);
         modal.style["animation-name"] = "fadein";
         modal.style.display = "grid";
         //Wait 3s until reset the game
