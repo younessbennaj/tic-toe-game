@@ -36,6 +36,8 @@ class Board {
         this.ctx.fillStyle = this.tileColor;
         this.drawTiles();
         this.buildTiles();
+        this.currentPlayer = this.players[0];
+        this.setCurrentPlayer(this.currentPlayer);
         //this.drawImage();
 
         let that = this;
@@ -68,10 +70,10 @@ class Board {
         let clickOnBoard = () => {
 
             //Process to set the current player
-            (() => {
-                if (this.round % 2 === 0) this.currentPlayer = this.players[0]
-                else this.currentPlayer = this.players[1]
-            })();
+            // (() => {
+            //     if (this.round % 2 === 0) this.currentPlayer = this.players[0]
+            //     else this.currentPlayer = this.players[1]
+            // })();
 
             //process to mark a tile and update attributes
             (() => {
@@ -138,6 +140,11 @@ class Board {
             //Check if the current player has won the game
             if (this.currentPlayer.hasWon) {
                 this.endGame();
+            } else {
+                //set the new current player
+                if (this.round % 2 === 0) this.currentPlayer = this.players[0]
+                else this.currentPlayer = this.players[1]
+                this.setCurrentPlayer(this.currentPlayer);
             }
         }
         //Add our handler to the click event listener on the drawing context instance
@@ -215,7 +222,9 @@ class Board {
         this.tiles = [];
         this.currentTile = { coord: {}, isClicked: false };
         this.round = 0;
-        this.currentPlayer = {};
+        //Reset the current player to the first player
+        this.currentPlayer = this.players[0];
+        this.setCurrentPlayer(this.currentPlayer);
 
         //Clear all the drawing elements in the canvas
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -243,6 +252,11 @@ class Board {
     setRound(round) {
         let roundCounter = document.getElementById("roundCounter");
         roundCounter.innerHTML = round;
+    }
+
+    setCurrentPlayer(player) {
+        let messagePlayer = document.getElementById('messagePlayer');
+        messagePlayer.innerHTML = `Go ${player.name}`;
     }
 }
 
