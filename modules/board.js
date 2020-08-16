@@ -37,8 +37,8 @@ class Board {
         this.drawTiles();
         this.buildTiles();
         this.currentPlayer = this.players[0];
-        this.setCurrentPlayer(this.currentPlayer);
-        //this.drawImage();
+        this.setCurrentPlayerMessage(this.currentPlayer);
+        this.setScore(this.players);
 
         let that = this;
 
@@ -137,18 +137,27 @@ class Board {
 
             //Check if the current player has won the game
             if (this.currentPlayer.hasWon) {
+                //Increment the score of the current player
+                this.currentPlayer.score++;
+                //Set a winning message for the current player
                 this.setMessage(`${this.currentPlayer.name} has won the game !`);
+                //End the game
                 this.endGame();
             } else {
+                //If there is no winning arrangement, then ...
+
                 //Check if the game is over
                 if (this.round === 9) {
+                    //Set a message that says to the players that there is a draw
                     this.setMessage("It was a draw");
+                    //End the game
                     this.endGame();
                 };
-                //set the new current player
+
+                //Set the next current player and go to the next round
                 if (this.round % 2 === 0) this.currentPlayer = this.players[0]
                 else this.currentPlayer = this.players[1]
-                this.setCurrentPlayer(this.currentPlayer);
+                this.setCurrentPlayerMessage(this.currentPlayer);
             }
         }
         //Add our handler to the click event listener on the drawing context instance
@@ -203,6 +212,9 @@ class Board {
     }
 
     endGame() {
+        //Display the score
+        this.setScore(this.players);
+
         let modal = document.getElementById("resultModal");
         // this.setMessage(`${this.currentPlayer.name} has won the game !`);
         modal.style["animation-name"] = "fadein";
@@ -228,7 +240,7 @@ class Board {
         this.round = 0;
         //Reset the current player to the first player
         this.currentPlayer = this.players[0];
-        this.setCurrentPlayer(this.currentPlayer);
+        this.setCurrentPlayerMessage(this.currentPlayer);
 
         //Clear all the drawing elements in the canvas
         this.ctx.clearRect(0, 0, this.width, this.height);
@@ -248,6 +260,18 @@ class Board {
         }
     }
 
+    setScore(players) {
+        const firstPlayerName = document.getElementById("firstPlayerName");
+        const secondPlayerName = document.getElementById("secondPlayerName");
+        const firstPlayerScore = document.getElementById("firstPlayerScore");
+        const secondPlayerScore = document.getElementById("secondPlayerScore");
+        const [player1, player2] = players;
+        firstPlayerName.innerHTML = player1.name;
+        secondPlayerName.innerHTML = player2.name;
+        firstPlayerScore.innerHTML = player1.score;
+        secondPlayerScore.innerHTML = player2.score;
+    }
+
     setMessage(message) {
         let resultMessage = document.getElementById('resultMessage');
         resultMessage.innerHTML = message;
@@ -258,7 +282,7 @@ class Board {
         roundCounter.innerHTML = round;
     }
 
-    setCurrentPlayer(player) {
+    setCurrentPlayerMessage(player) {
         let messagePlayer = document.getElementById('messagePlayer');
         messagePlayer.innerHTML = `Go ${player.name}`;
     }
