@@ -5,8 +5,8 @@ class Player {
         //Represent the game played by the player from a logic point of view
         //model data of the game played by the player
         this.game = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-        //
         this.hasWon = false;
+        this.score = 0;
     }
 
     //updateGameModel => pass value to "true" when the player clicked on a tile
