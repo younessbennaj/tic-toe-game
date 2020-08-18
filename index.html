@@ -10,36 +10,54 @@
 </head>
 
 <body>
-    <p id="messagePlayer"></p>
-    <div id="game-container" class="container">
-        <div id="resultModal">
-            <p id="resultMessage">Player 1 win !</p>
-        </div>
-    </div>
-    <!-- <h1 id="title" class="title">TIC TOE GAME</h1> -->
-    <!-- <canvas id="myCanvas" height="300px" width="300px"></canvas> -->
-    <p>Round:
-        <span id="roundCounter">0</span>
-    </p>
-    <div class="table-container">
-        <table id="scoreTable">
-            <thead>
-                <tr>
-                    <th id="firstPlayerName"></th>
-                    <th id="secondPlayerName"></th>
-                </tr>
-            </thead>
-            <tbody class="table-body">
-                <tr>
-                    <td id="firstPlayerScore">0</td>
-                    <td id="secondPlayerScore">1</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div style="display:none;">
-        <img id="sprite" src="img/sprite.png" width="300" height="300">
-    </div>
+    <header class="header">
+        <h2 class="header__title">Tic-Tac-Toe Game</h2>
+    </header>
+    <main class="main">
+        <section class="board">
+            <div class="board__content align-center">
+                <!-- message to the Players -->
+                <p id="messagePlayer" class="board__message"></p>
+                <!-- game container -->
+                <div id="gameContainer" class="board__container">
+                    <div id="resultModal">
+                        <p id="resultMessage">Player 1 win !</p>
+                    </div>
+                </div>
+                <p class="board__message">Round:
+                    <span id="roundCounter">0</span>
+                </p>
+                <!-- Sprite element in display none -->
+                <div style="display:none;">
+                    <img id="sprite" src="img/sprite.png" width="300" height="300">
+                </div>
+            </div>
+        </section>
+        <hr class="separator">
+        <section class="score">
+            <div class="score__content align-center ">
+                <h4 class="score__title">Total Score</h4>
+                <!-- the score table -->
+                <table class="score__table" id="scoreTable">
+                    <thead>
+                        <tr>
+                            <th id="firstPlayerName"></th>
+                            <th id="secondPlayerName"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-body">
+                        <tr>
+                            <td id="firstPlayerScore">0</td>
+                            <td id="secondPlayerScore">1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <footer class="footer">
+        <p class="footer__paragraph">© 2020 - Built by Youness Bennaj</p>
+    </footer>
 </body>
 
 <script type="module" src="index.js"></script>
