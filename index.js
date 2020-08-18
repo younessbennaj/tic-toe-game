@@ -6,7 +6,7 @@ import { Board } from './modules/board.js';
 import { Player } from './modules/player.js';
 
 //Get our main container element that will receive a canvas element
-let container = document.getElementById("game-container");
+let container = document.getElementById("gameContainer");
 
 /*/
     new Canvas(width, height, id, parent) => create a new instance of the Canvas
